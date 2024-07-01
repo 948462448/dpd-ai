@@ -1,12 +1,17 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
+import json
 
-from .models import Article
+from django.contrib.auth.models import User
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
 from openai import OpenAI
+
+from openAiChat.common.exception.ErrorCode import ErrorCode
 
 api_key = "sk-0da03bdfd5414766ae05a0050134cfb1"
 base_url = "https://api.deepseek.com"
+
 
 # 对话V1版本，仅支持一条提问，不支持对话
 def deepseek_ai_chat_v1(request):
@@ -41,3 +46,72 @@ def deepseek_ai_chat_v2(request):
         stream=False
     )
     return HttpResponse(response.choices[0].message.content)
+
+
+def register(request):
+    if request.method == 'POST':
+        # 获取参数
+        user_name = request.POST.get('username', '')
+        pwd = request.POST.get('password', '')
+
+        # 用户已存在
+        if User.objects.filter(username=user_name):
+            return JsonResponse(ErrorCode.USER_EXIST_ERROR.error_print)
+        # 用户不存在
+        else:
+            # 使用User内置方法创建用户
+            user = User.objects.create_user(
+                username=user_name,
+                password=pwd,
+                email='123@qq.com',
+                is_staff=1,
+                is_active=1,
+                is_superuser=0
+            )
+
+            return JsonResponse({
+                'code': 200,
+                'msg': '用户注册成功',
+                'success': True
+            })
+
+    else:
+        return JsonResponse(ErrorCode.REQUEST_TYPE_NO_SUPPORT_ERROR.error_print)
+
+
+def login(request):
+    if request.method == 'POST':
+        # 获取参数
+        user_name = request.POST.get('username', '')
+        pwd = request.POST.get('password', '')
+
+        # 用户已存在
+        if User.objects.filter(username=user_name):
+            # 使用内置方法验证
+            user = authenticate(username=user_name, password=pwd)
+            # 验证通过
+            if user:
+                return JsonResponse({
+                    'code': 200,
+                    'success': True,
+                    'msg': '登录成功'
+                })
+            # 验证失败
+            else:
+                return JsonResponse(ErrorCode.USER_AUTH_ERROR.error_print)
+
+        # 用户不存在
+        else:
+            return JsonResponse(ErrorCode.REQUEST_TYPE_NO_SUPPORT_ERROR.error_print)
+
+
+"""此处导入的模块和注册是一样的"""
+
+
+def logout(request):
+    logout(request)
+    return JsonResponse({
+        'code': 200,
+        'success': True,
+        'msg': '用户已登出'
+    })
