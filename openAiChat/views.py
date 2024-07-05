@@ -3,6 +3,7 @@ import json
 from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.middleware.csrf import get_token
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from openai import OpenAI
@@ -11,6 +12,11 @@ from openAiChat.common.exception.ErrorCode import ErrorCode
 
 api_key = "sk-0da03bdfd5414766ae05a0050134cfb1"
 base_url = "https://api.deepseek.com"
+
+
+def get_csrf_token(request):
+    token = get_token(request)
+    return JsonResponse({'token': token})
 
 
 # 对话V1版本，仅支持一条提问，不支持对话
@@ -30,7 +36,6 @@ def deepseek_ai_chat_v1(request):
     return HttpResponse(response.choices[0].message.content)
 
 
-@csrf_exempt
 # 对话V2版本，支持多轮对话提问
 def deepseek_ai_chat_v2(request):
     client = OpenAI(api_key=api_key, base_url=base_url)

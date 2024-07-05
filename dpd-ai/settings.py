@@ -125,4 +125,21 @@ APSCHEDULER_RUN_NOW_TIMEOUT = 25
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ORIGIN_WHITELIST = [  # 配置ip白名单
+    # 前端的源
+    "http://127.0.0.1",
+    "http://localhost:5173",
+    "https://chat.acdpd.top",
+    "http://chat.acdpd.top",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1",
+    "http://localhost:5173",
+    "https://chat.acdpd.top",
+    "http://chat.acdpd.top",
+]
+
+CORS_ALLOW_CREDENTIALS = True
