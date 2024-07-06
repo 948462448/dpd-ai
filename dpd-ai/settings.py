@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "openAiChat.apps.OpenaichatConfig"
+    "openAiChatV2.apps.OpenaichatConfig"
 
 ]
 
