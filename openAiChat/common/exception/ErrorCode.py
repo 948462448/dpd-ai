@@ -13,6 +13,7 @@ class ErrorCode(Enum):
     USER_NOT_LOGGED_IN_ERROR = ("0001001", "用户未登录")
     USER_EXIST_ERROR = ("00001002", "用户已存在")
     USER_AUTH_ERROR = ("00001003", "用户认证失败")
+    USER_NOT_EXIST_ERROR = ("00001004", "用户不存在，请确认")
 
     @property
     def code(self):
@@ -31,4 +32,4 @@ class ErrorCode(Enum):
             "errmsg": self.errmsg,
             "success": True if self.code == "200" else False
         }
-        return json.dumps(error, ensure_ascii=False)
+        return error

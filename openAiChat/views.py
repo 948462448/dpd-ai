@@ -56,8 +56,8 @@ def deepseek_ai_chat_v2(request):
 def register(request):
     if request.method == 'POST':
         # 获取参数
-        user_name = request.POST.get('username', '')
-        pwd = request.POST.get('password', '')
+        user_name = json.loads(request.body).get('username', '')
+        pwd = json.loads(request.body).get('password', '')
 
         # 用户已存在
         if User.objects.filter(username=user_name):
@@ -68,7 +68,6 @@ def register(request):
             user = User.objects.create_user(
                 username=user_name,
                 password=pwd,
-                email='123@qq.com',
                 is_staff=1,
                 is_active=1,
                 is_superuser=0
@@ -87,9 +86,8 @@ def register(request):
 def login(request):
     if request.method == 'POST':
         # 获取参数
-        user_name = request.POST.get('username', '')
-        pwd = request.POST.get('password', '')
-
+        user_name = json.loads(request.body).get('username', '')
+        pwd = json.loads(request.body).get('password', '')
         # 用户已存在
         if User.objects.filter(username=user_name):
             # 使用内置方法验证
@@ -104,17 +102,13 @@ def login(request):
             # 验证失败
             else:
                 return JsonResponse(ErrorCode.USER_AUTH_ERROR.error_print)
-
-        # 用户不存在
         else:
-            return JsonResponse(ErrorCode.REQUEST_TYPE_NO_SUPPORT_ERROR.error_print)
-
-
-"""此处导入的模块和注册是一样的"""
+            return JsonResponse(ErrorCode.USER_NOT_EXIST_ERROR.error_print)
+    else:
+        return JsonResponse(ErrorCode.REQUEST_TYPE_NO_SUPPORT_ERROR.error_print)
 
 
 def logout(request):
-    logout(request)
     return JsonResponse({
         'code': 200,
         'success': True,
