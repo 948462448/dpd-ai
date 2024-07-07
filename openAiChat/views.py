@@ -2,10 +2,8 @@ import json
 
 from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import get_token
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
 from openai import OpenAI
 
 from openAiChat.common.exception.ErrorCode import ErrorCode
