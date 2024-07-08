@@ -11,6 +11,10 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
     # 登录
     path('api/v1/register', views.register, name='register'),
-    path('api/v1/login', views.login, name='login'),
-    path('api/v1/logout', views.logout, name='logout'),
+    path('api/v1/login', views.login_view, name='login'),
+    path('api/v1/logout', views.logout_view, name='logout'),
+    # 聊天记录
+    path('api/v1/get/chat/list', views.get_chat_record_list, name='doGetChatRecordList'),
+    path('api/v1/chat/rename', views.chat_record_rename, name='doRenameChatRecord'),
+    path('api/v1/get/chat/one', views.get_chat_record, name='doGetChatListOne'),
 ]
