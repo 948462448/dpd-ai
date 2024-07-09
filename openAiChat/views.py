@@ -19,7 +19,19 @@ base_url = "https://api.deepseek.com"
 
 def get_csrf_token(request):
     token = get_token(request)
-    return JsonResponse({'token': token})
+    return JsonResponse({
+        'code': 200,
+        'success': True,
+        'token': token
+    })
+
+
+def check_user_login(request):
+    return JsonResponse({
+        'code': 200,
+        'success': True,
+        'data': request.user.is_authenticated
+    })
 
 
 # 对话V1版本，仅支持一条提问，不支持对话
@@ -40,7 +52,6 @@ def deepseek_ai_chat_v1(request):
 
 
 # 对话V2版本，支持多轮对话提问
-@login_required
 @require_http_methods(["POST"])
 def deepseek_ai_chat_v2(request):
     client = OpenAI(api_key=api_key, base_url=base_url)
@@ -50,7 +61,8 @@ def deepseek_ai_chat_v2(request):
     request_param = [{"role": "system", "content": "You are a helpful assistant"}]
     for param in message_list:
         request_param.append({"role": param["role"], "content": param["content"]})
-    chat_id = save_chat_record(chat_id, request.user, request_param, "deepseek-chat", message_list[0]["content"])
+    chat_id = save_chat_record(chat_id, request.user, json.dumps(message_dirt['historyChatList'], ensure_ascii=False), "deepseek-chat",
+                               message_list[0]["content"])
     response = client.chat.completions.create(
         model="deepseek-chat",
         messages=request_param,
@@ -59,7 +71,10 @@ def deepseek_ai_chat_v2(request):
     request_param.append({"role": response.choices[0].message.role,
                           "content": response.choices[0].message.content})
     request_param.pop(0)
-    chat_id = save_chat_record(chat_id, request.user, request_param, "deepseek-chat", message_list[0]["content"])
+    message_dirt['historyChatList'].append({"role": response.choices[0].message.role,
+                                            "content": response.choices[0].message.content, "type": "chat"})
+    chat_id = save_chat_record(chat_id, request.user, json.dumps(message_dirt['historyChatList'], ensure_ascii=False), "deepseek-chat",
+                               message_list[0]["content"])
     json_response = {
         "success": True,
         "code": 200,
@@ -113,6 +128,21 @@ def get_chat_record(request):
         'code': 200,
         'success': True,
         'data': json_data
+    })
+
+
+@login_required
+@require_http_methods(["POST"])
+def do_flush_chat_record_list(request):
+    user = request.user
+    request_body_res = json.loads(request.body)
+    chat_id = request_body_res.get('chatId')
+    message_list = json.dumps(request_body_res.get('historyChatList'), ensure_ascii=False)
+    ChatList.objects.filter(pk=chat_id, userId=user.username).update(chat=message_list)
+    return JsonResponse({
+        'code': 200,
+        'success': True,
+        'data': "更新成功"
     })
 
 

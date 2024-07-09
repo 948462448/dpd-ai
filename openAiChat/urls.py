@@ -13,8 +13,10 @@ urlpatterns = [
     path('api/v1/register', views.register, name='register'),
     path('api/v1/login', views.login_view, name='login'),
     path('api/v1/logout', views.logout_view, name='logout'),
+    path('api/v1/check/login', views.check_user_login, name='checkLogin'),
     # 聊天记录
     path('api/v1/get/chat/list', views.get_chat_record_list, name='doGetChatRecordList'),
     path('api/v1/chat/rename', views.chat_record_rename, name='doRenameChatRecord'),
     path('api/v1/get/chat/one', views.get_chat_record, name='doGetChatListOne'),
+    path('api/v1/chat/flush', views.do_flush_chat_record_list, name='doGetFlushChatRecordList'),
 ]
