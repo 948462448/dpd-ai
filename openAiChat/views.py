@@ -46,9 +46,9 @@ def deepseek_ai_chat_v1(request):
             {"role": "user", "content": f'{message}'},
         ],
         presence_penalty=1.5,
-        stream=False
+        stream=True
     )
-    return HttpResponse(response.choices[0].message.content)
+    return HttpResponse(response)
 
 
 # 对话V2版本，支持多轮对话提问
