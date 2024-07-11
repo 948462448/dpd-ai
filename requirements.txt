@@ -1,0 +1,4 @@
+Django==4.2.13
+django-cors-headers==4.4.0
+openai==1.35.10
+urllib3==1.26.15
