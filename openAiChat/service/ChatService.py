@@ -39,7 +39,7 @@ def stream_chat(chat_id, message_list, history_chat_list, model, user, uuid):
             "code": 200,
             "data": {
                 "chatId": chat_id,
-                "message": "".join(model_answer_messages),
+                "message": chunk_message,
                 "role": chunk.choices[0].delta.role,
                 "finish": False,
             }
