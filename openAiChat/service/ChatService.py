@@ -4,7 +4,7 @@ from openai import OpenAI
 
 from openAiChat.common.enums.OpenAPIKeyEnum import OpenAPIKeyEnum
 from openAiChat.common.enums.SupportModelEnum import SupportModelEnum
-from openAiChat.migrations import ChatModelOpt
+from openAiChat.dal import ChatModelOpt
 
 """
    流式请求对话
