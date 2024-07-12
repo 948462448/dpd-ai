@@ -24,7 +24,11 @@ SECRET_KEY = 'django-insecure-18=pvpc#-2)ixmy^q=z)iep0l13-^=v$6gu&&4*b)batza_iw+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'chat.acdpd.top',  # 添加你的域名
+]
 
 # Application definition
 
