@@ -2,11 +2,11 @@ from django.urls import path
 from django.views.generic import TemplateView
 
 from .view import ChatViews, AuthView
-
 urlpatterns = [
+    # 首页
+    path('', TemplateView.as_view(template_name='index.html')),
     # 鉴权
     path("api/v1/get/token", AuthView.get_csrf_token, name="get_token"),
-    path('', TemplateView.as_view(template_name='index.html')),
     path('api/v1/register', AuthView.register, name='register'),
     path('api/v1/login', AuthView.login_view, name='login'),
     path('api/v1/logout', AuthView.logout_view, name='logout'),
@@ -23,3 +23,4 @@ urlpatterns = [
     path('api/v1/get/chat/one', ChatViews.get_chat_record, name='doGetChatListOne'),
     path('api/v1/chat/flush', ChatViews.do_flush_chat_record_list, name='doGetFlushChatRecordList'),
 ]
+

@@ -43,7 +43,6 @@ def deepseek_ai_chat_v2(request):
     return JsonResponse(json_response)
 
 
-@login_required
 @require_http_methods(["POST"])
 def deepseek_ai_chat_v3(request):
     chat_id, history_message_list, message_list, model, uuid = do_get_chat_param(request)
