@@ -1,5 +1,4 @@
 import json
-import time
 
 from django.http import HttpResponse, JsonResponse, StreamingHttpResponse
 from django.contrib.auth.decorators import login_required
@@ -59,9 +58,13 @@ def deepseek_ai_chat_v3(request):
 def chat_record_rename(request):
     request_body = json.loads(request.body)
     user = request.user
-    old_chat_record = ChatList.objects.filter(pk=request_body.get("chatId")).first()
+    title = request_body.get("title")
+    if not title:
+        return JsonResponse(ErrorCode.PARAMS_EMPTY_ERROR.error_print)
+    old_chat_record = ChatList.objects.filter(pk=request_body.get("chatId"))
     if old_chat_record.exists():
-        if old_chat_record.userId != user.username:
+        record = old_chat_record.first()
+        if record.userId != user.username:
             return JsonResponse(ErrorCode.USER_NO_PERMISSION_ERROR.error_print)
         old_chat_record.update(title=request_body.get("title"))
         return JsonResponse({
@@ -69,6 +72,27 @@ def chat_record_rename(request):
             'success': True,
             'msg': '更新成功',
             'data': request_body.get("title")
+        })
+    else:
+        return JsonResponse(ErrorCode.QUERY_DATA_NO_EXISTS_ERROR.error_print)
+
+
+@login_required
+@require_http_methods(["POST"])
+def chat_record_delete(request):
+    request_body = json.loads(request.body)
+    user = request.user
+    old_chat_record = ChatList.objects.filter(pk=request_body.get("chatId"))
+    if old_chat_record.exists():
+        data = old_chat_record.first();
+        if data.userId != user.username:
+            return JsonResponse(ErrorCode.USER_NO_PERMISSION_ERROR.error_print)
+        old_chat_record.delete()
+        return JsonResponse({
+            'code': 200,
+            'success': True,
+            'msg': '删除成功',
+            'data': True
         })
     else:
         return JsonResponse(ErrorCode.QUERY_DATA_NO_EXISTS_ERROR.error_print)

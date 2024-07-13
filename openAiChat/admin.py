@@ -1,6 +1,6 @@
 from django.contrib import admin
-from openAiChat.models import Article
+from openAiChat.models import ChatList
 
 
 # Register your models here.
-admin.site.register(Article)
+admin.site.register(ChatList)

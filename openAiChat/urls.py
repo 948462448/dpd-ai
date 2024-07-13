@@ -19,6 +19,7 @@ urlpatterns = [
 
     path('api/v1/get/chat/list', ChatViews.get_chat_record_list, name='doGetChatRecordList'),
     path('api/v1/chat/rename', ChatViews.chat_record_rename, name='doRenameChatRecord'),
+    path('api/v1/chat/delete', ChatViews.chat_record_delete, name='doRenameChatDelete'),
     path('api/v1/get/chat/one', ChatViews.get_chat_record, name='doGetChatListOne'),
     path('api/v1/chat/flush', ChatViews.do_flush_chat_record_list, name='doGetFlushChatRecordList'),
 ]
