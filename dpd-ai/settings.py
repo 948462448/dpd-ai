@@ -135,6 +135,7 @@ CORS_ORIGIN_WHITELIST = [  # 配置ip白名单
     # 前端的源
     "http://127.0.0.1",
     "http://localhost:5173",
+    "http://localhost:5174",
     "https://chat.acdpd.top",
     "http://chat.acdpd.top",
 ]
@@ -142,6 +143,7 @@ CORS_ORIGIN_WHITELIST = [  # 配置ip白名单
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1",
     "http://localhost:5173",
+    "http://localhost:5174",
     "https://chat.acdpd.top",
     "http://chat.acdpd.top",
 ]

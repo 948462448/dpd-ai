@@ -14,7 +14,7 @@ from openAiChat.service import ChatService
 
 
 # 对话V1版本，仅支持一条提问，不支持对话
-def deepseek_ai_chat_v1(request):
+def chat_v1(request):
     client = OpenAI(api_key="", base_url="")
     message = request.GET.get('msg')
     response = client.chat.completions.create(
@@ -32,7 +32,7 @@ def deepseek_ai_chat_v1(request):
 
 # 对话V2版本，支持多轮对话提问
 @require_http_methods(["POST"])
-def deepseek_ai_chat_v2(request):
+def chat_v2(request):
     chat_id, history_message_list, message_list, model, uuid = do_get_chat_param(request)
     answer_json = ChatService.batch_chat(chat_id, message_list, history_message_list, model, request.user, uuid)
     json_response = {
@@ -44,7 +44,7 @@ def deepseek_ai_chat_v2(request):
 
 
 @require_http_methods(["POST"])
-def deepseek_ai_chat_v3(request):
+def chat_v3(request):
     chat_id, history_message_list, message_list, model, uuid = do_get_chat_param(request)
     ai_response = ChatService.stream_chat(chat_id, message_list, history_message_list, model, request.user, uuid)
     stream_response = StreamingHttpResponse(ai_response, content_type='text/event-stream')
