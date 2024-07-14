@@ -32,3 +32,11 @@ class SupportModelEnum(Enum):
                 return model_enum.model_source
         raise CustomException(ErrorCode.ENUM_NOT_FIND_ERROR.code, ErrorCode.ENUM_NOT_FIND_ERROR.errmsg(model_name=model_name))
 
+    @classmethod
+    def get_all_model(cls):
+        support_model_list = []
+        for model_enum in cls:
+            support_model_list.append(model_enum.model_name)
+
+        return support_model_list
+
