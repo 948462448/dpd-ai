@@ -18,7 +18,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.PRIVATE_SECRET_KEY }}" > ~/.ssh/github-actions
           chmod 600 ~/.ssh/github-actions
-          echo -e "Host remote-server\n\tHostName ${{ secrets.HOST }}\n\tUser ${{ secrets.USER }}" > ~/.ssh/config
+          echo -e "Host remote-server\n\tHostName ${{ secrets.HOST }}\n\tUser ${{ secrets.USER }}"\n\t IdentityFile ~/.ssh/github-actions > ~/.ssh/config
       - name: Exec script
         run: |
           ssh remote-server './script/deploymentDpdAi.sh restart'
