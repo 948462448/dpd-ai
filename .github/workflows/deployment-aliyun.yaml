@@ -7,16 +7,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  aliyun-deployment:
     runs-on: ubuntu-latest
-    environment: secrets
+    environment: aliyun-deployment
     steps:
-      - run: echo "${{ secrets.HOST }} || ${{ secrets.PASSWORD }}"
-      - uses: actions/checkout@v4
-      - name: run server
-        uses: arthurvanl/action-exec-ssh@v1
-        with:
-          host: ${{ secrets.HOST }}
-          username: admin
-          password: ${{ secrets.PASSWORD }}
-          commands: './script/deploymentDpdAi.sh start'
+      - name: Check code
+        uses: actions/checkout@v4
+      - name: Create ssh
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PRIVATE_SECRET_KEY }}" > ~/.ssh/github-actions
+          chmod 600 ~/.ssh/id_rsa
+          echo -e "Host remote-server\n\tHostName ${{ secrets.HOST }}\n\tUser ${{ secrets.USER }}\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+      - name: Exec script
+        run: |
+          ssh remote-server './script/deploymentDpdAi.sh restart'
