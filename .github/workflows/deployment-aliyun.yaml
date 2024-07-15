@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: aliyun-deployment
     steps:
+      - name: Check install ssh
+        run: |
+          apt list --installed | grep openssh-server
       - name: Check code
         uses: actions/checkout@v4
       - name: Create ssh
