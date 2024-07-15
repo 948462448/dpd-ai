@@ -22,4 +22,4 @@ jobs:
           echo -e "Host remote-server\n\tHostName ${{ secrets.HOST }}\n\tUser ${{ secrets.USER }}\n\tIdentityFile ~/.ssh/github-actions" > ~/.ssh/config
       - name: Exec script
         run: |
-          ssh remote-server './script/deploymentDpdAi.sh restart'
+          ssh remote-server './script/deploymentDpdAi.sh start'
