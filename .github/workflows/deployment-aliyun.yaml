@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: secrets
     steps:
       - run: echo "${{ secrets.HOST }} || ${{ secrets.PASSWORD }}"
       - uses: actions/checkout@v4
