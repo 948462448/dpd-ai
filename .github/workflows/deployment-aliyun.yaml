@@ -17,6 +17,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.PRIVATE_SECRET_KEY }}" > ~/.ssh/github-actions
+          ssh-keyscan ${{ secrets.HOST } >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/github-actions
           echo -e "Host remote-server\n\tHostName ${{ secrets.HOST }}\n\tUser ${{ secrets.USER }}\n\tIdentityFile ~/.ssh/github-actions" > ~/.ssh/config
       - name: Exec script
