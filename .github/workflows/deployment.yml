@@ -1,9 +1,12 @@
 name: dpd-ai deployment
 
-on:
-  push:
-    branches:
-      - master
+#on:
+#  push:
+#    branches:
+#      - master,feat/20240710_v3_songlei
+
+on: [push]
+
 jobs:
   deployment_job:
     runs-on: macOS-latest
