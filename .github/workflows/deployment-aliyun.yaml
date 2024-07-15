@@ -10,6 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - run: echo "${{ secrets.HOST }} || ${{ secrets.PASSWORD }}"
+      - uses: actions/checkout@v4
       - name: run server
         uses: arthurvanl/action-exec-ssh@v1
         with:
